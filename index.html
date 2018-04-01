@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- bindinator.js Copyright ©2016-2017 Tonio Loewald -->
+  <meta charset="utf-8">
+  <title>foldermark 3</title>
+  <script src="https://rawgit.com/tonioloewald/bindinator.js/master/lib/require.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script>
+    /* global require */
+    'use strict';
+
+    require.autoPreload().
+    then(() => {
+      const b8r = window.b8r = require('https://rawgit.com/tonioloewald/bindinator.js/master/source/b8r.js');
+      b8r.register('fm3', {});
+      b8r.component('components/content');
+
+      const types = require('lib/types.js');
+
+      const load_path = () => {
+        const hash = window.location.hash.substr(1);
+        const name_parts = hash ? hash.split('/') : [];
+        let tree_node = b8r.get('fm3.tree');
+        while(name_parts.length) {
+          const name = name_parts.shift();
+          tree_node = tree_node.children.find(t => t.name === name); // jshint ignore:line
+        }
+        b8r.json(`fm3/page/${tree_node.path}`).then(assets => {
+          assets = assets.map(asset => {
+            const asset_path = asset.path;
+            const file_extension = asset_path.split('.').pop().toLowerCase();
+            let name = asset_path.split('/').pop(); 
+            if (name.indexOf('_') > -1) {
+              name = name.split('_').slice(1).join('_');
+            }
+            name = name.replace(/[_-]/g, ' ');
+            return {
+              name,
+              type: types[file_extension] || 'unknown',
+              path: tree_node.path ? tree_node.path + '/' + asset_path : asset_path,
+              size: asset.size,
+            };
+          });
+          b8r.set('fm3.page', {path: tree_node.path, url: tree_node.url, assets});
+        });
+      };
+
+      window.addEventListener('hashchange', load_path);
+
+      b8r.json(`fm3/tree`).then(tree => {
+        b8r.set('fm3', {tree});
+        load_path();
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="content" data-component="content"></div>
+  <div id="nav">
+    <div>
+      <div 
+        data-path="fm3.tree"
+        data-component="navtree"
+      ></div>
+    </div>
+  </div>
+</html>

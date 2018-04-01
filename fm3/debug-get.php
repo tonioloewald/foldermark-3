@@ -1,0 +1,5 @@
+<?php
+// GET debug
+
+  phpinfo();
+?>

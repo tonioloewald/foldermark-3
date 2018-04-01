@@ -1,0 +1,23 @@
+<div
+  data-list="fm3.page.assets:path"
+  data-bind="component_map(
+    markdown:markdown-part|
+    image:image-part|
+    video:video-part|
+    audio:audio-part|
+    html:html-part|
+    download-part
+  )=.type"
+></div>
+<script>
+/* global b8r */
+'use strict';
+
+  b8r.component('image-part');
+  b8r.component('markdown-part');
+  b8r.component('download-part');
+  b8r.component('video-part');
+  b8r.component('audio-part');
+  b8r.component('html-part');
+  b8r.component('navtree');
+</script>

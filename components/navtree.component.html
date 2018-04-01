@@ -1,0 +1,43 @@
+<!--
+# navtree
+-->
+<style>
+  .navtree-component {
+    padding: 5px;
+  }
+
+  .navtree-component .navtree-component {
+    margin-left: 10px;
+  }
+
+  .navtree-component a {
+    padding: 0 0 2px;
+  }
+
+  .navtree-component a.current {
+    padding: 0;
+    border-bottom: 2px solid white;
+  }
+</style>
+<a 
+  data-bind="
+    text=_data_.name;
+    attr(href)=#${_data_.url};
+    method(_component_.current)=fm3.page.url;
+  "
+></a>
+<div 
+  data-component="navtree"
+  data-list=".children"
+>
+</div>
+<script>
+/* global get, set, b8r, component */
+'use strict';
+
+  set({
+    current: (elt, url) => {
+      b8r.classes(elt, {current: get('url') === url});
+    }
+  });
+</script>

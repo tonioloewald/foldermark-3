@@ -1,0 +1,13 @@
+<!--
+# markdown-part
+-->
+<script>
+  Promise.all([
+    require.lazy('https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js'),
+    b8r.ajax(b8r.getListInstance(component).path)
+  ]).
+  then(([showdown, source]) => {
+    const converter = new showdown.Converter();
+    component.innerHTML = converter.makeHtml(source);
+  });
+</script>

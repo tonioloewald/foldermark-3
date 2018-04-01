@@ -1,0 +1,10 @@
+h1:after {
+    position: relative;
+    top: 10px;
+    font-size: 14px;
+    font-style: italic;
+    color: #aaa;
+    text-align: right;
+    background-color: #ffc;
+    content: "CSS file sneaking a pseudo element after every H1";
+}
